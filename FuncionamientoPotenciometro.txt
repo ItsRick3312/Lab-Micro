@@ -1,0 +1,25 @@
+#define inf 135 // Valor digital inferior
+#define sup 480 // Valor digital superior
+#include <avr/io.h>
+int main ( void) {
+uint16_t temp;
+DDRC = 0x00; // En trada para e l s e n s o r
+DDRB = 0xFF ; // S a l i d a para l o s a c t u a d o r e s
+PORTB = 0x00; // I n i c i a con l a s s a l i d a s s i n a c t i v a r
+ADMUX = 0b00000100; // S e l e c c i o n a ADC0 y Vre f en AREF
+ADCSRA = 0xC3; // H a b i l i t a ADC, i n i c i a c o n v e r s i ´on
+// y d i v i d e e n t r e 8
+DIDR0 = 0x01; // Anula e l b u f f e r d i g i t a l en ADC0 //PARA TOMAR VALORES DIGITALES
+while ( 1 ) {
+while ( ! (ADCSRA & 1 << ADIF ) ) ; // Espera f i n de c o n v e r s i ´on
+ADCSRA |= 1 << ADIF; // Limpia l a bandera ADIF ACTIVA LA BANDERA DE FIN DE CONVERSION 
+temp = ADCW; // Ob t iene l a tem pe r a t u r a
+if ( temp > sup )
+PORTB = 0x01 ; // Ac t iv a LED ROJO
+else if (temp < inf)
+PORTB = 0x02 ; // Ac t iv a LED AZUL
+else
+PORTB = 0x00 ; // S a l i d a s s i n a c t i v a r
+ADCSRA |= 1 << ADSC; // I n i c i a nueva c o n v e r s i ´on
+}
+}
