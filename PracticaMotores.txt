@@ -1,0 +1,14 @@
+// C++ code
+//
+void setup()
+{
+  DDRD=0B11111111;
+}
+
+void loop()
+{
+  PORTD=0B00001010;
+  delay(2000);
+  PORTD=0B00000101;
+  delay(2000);
+}
